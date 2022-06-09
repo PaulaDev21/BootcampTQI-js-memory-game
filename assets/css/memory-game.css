@@ -25,7 +25,7 @@
     text-align: center;
 }
 
-.memory-board{
+#memory-board{
     border:1px solid red;
     width: 95%;
     height: 100vh;
