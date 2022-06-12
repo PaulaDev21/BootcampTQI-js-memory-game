@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/memory-game.css">
+    <link rel="stylesheet" href="./assets/css/memory-game.css">
     <title>Learn it all!</title>
 
 </head>
@@ -14,13 +14,16 @@
     <main class="memory-wrapper">
         <header class="memory-header">
             <h1>How much JavaScript do you know?</h1>
+            <div id="reset-btn">
+                Shuffle!
+            </div>
         </header>
 
-        <section id="memory-board">
+        <section id="memory-board" onload="resetBoard()">
 
         </section>
     </main>
-    <script src="./assets/js/memoryUI.js"></script>
+    <script src="./assets/js/memoryUI.js" type="text/JavaScript"></script>
 </body>
 
 </html>

@@ -1,8 +1,6 @@
+// const QUESTIONS_FILE = './assets/data/questions.txt';
 
-
-const QUESTIONS_FILE = './assets/data/questions.txt';
-
-export let questions = () => {return [
+ let questions = () => {return [
     {
         question: "Para que JavaScript usa o DOM?", 
         answer: "Para manipular os elementos de uma página html.",
@@ -29,7 +27,7 @@ export let questions = () => {return [
     }, 
 ]};
 
-export function shuffleCards(nCards){
+function shuffleCards(nCards){
     const SHUFFLE_ROUNDS = 100;
     let generateIndexes = i => [...Array(i).keys()];
     let indexes = generateIndexes(nCards);
@@ -47,6 +45,4 @@ export function shuffleCards(nCards){
     
     return indexes;
 }
-
-
 
