@@ -55,17 +55,20 @@ function prepareCardFace() {
 
 
 function buildCardWrapper(pairId, faceBuilder) {
-    let cardTop = buildCardTop(pairId);
+
     let cardFace = faceBuilder(pairId);
 
     let faceWrapper = document.createElement('div');
     faceWrapper.setAttribute('class', 'card-face-wrapper');
     faceWrapper.appendChild(cardFace);
 
+    let cardTop = buildCardTop(pairId);
+
     let cardWrapper = document.createElement('div');
     cardWrapper.setAttribute('class', 'card-wrapper');
-    cardWrapper.appendChild(cardTop);
     cardWrapper.appendChild(faceWrapper);
+    cardWrapper.appendChild(cardTop);
+
 
     return cardWrapper;
 }
@@ -85,8 +88,8 @@ function createCards(questions) {
 function resetBoard() {
     let cardWrappers = cards;
     let boardElement = memoryBoard;
-    // let sInd = shuffleCards(cardWrappers.length);
-    let sInd = (i => [...Array(i).keys()])(cardWrappers.length);
+    let sInd = shuffleCards(cardWrappers.length);
+    //let sInd = (i => [...Array(i).keys()])(cardWrappers.length);
 
     let randomCard, cardIndex;
 
@@ -98,6 +101,11 @@ function resetBoard() {
     return boardElement;
 }
 
+// ================GAME MOTION====================
+
+function flipCard() {
+    this.classList.toggle('flip');
+}
 
 // ===========================INITIALIZING INTERFACE=====================================
 
@@ -152,7 +160,11 @@ let MOCK_QUESTIONS = [
 
 const CARD_TOP_IMAGE = "./assets/img/card-top3.jpg";
 const cards = createCards(MOCK_QUESTIONS);
-const memoryBoard = document.getElementById('memory-board')
+const memoryBoard = document.getElementById('memory-board');
+
+cards.forEach(card => {
+    card.addEventListener('click', flipCard);
+});
 
 document.getElementById('memory-wrapper').setAttribute('onload', resetBoard());
 document.getElementById('reset-btn').setAttribute('onclick', resetBoard());

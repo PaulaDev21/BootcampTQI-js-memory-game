@@ -4,12 +4,14 @@
     --main-color: indigo;
     --secondary-color: cornsilk;
     --shadow-color: gray;
+    --face-card-color: hotpink;
 }
 
 * {
     margin: 0;
     padding: 0;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
 }
 
 .memory-wrapper {
@@ -20,6 +22,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    perspective: 1000px;
 }
 
 .memory-header {
@@ -90,12 +93,18 @@
     justify-content: center;
     border-radius: 0.3rem;
     box-shadow: .2rem .2rem 0 var(--shadow-color);
-
+    transform-style: preserve-3d;
+    transition: transform .8s;
 }
 
 .card-wrapper:hover {
     filter: hue-rotate(-30deg);
     transform: translate(1px, -1px);
+}
+
+.card-wrapper:active {
+    transform: scale(0.98);
+    transition: 0.3s;
 }
 
 .card-top,
@@ -107,6 +116,14 @@
     border: none;
 }
 
+.card-face-wrapper .card-top {
+    backface-visibility: hidden;
+}
+
+.card-wrapper.flip {
+    transform: rotateY(180deg);
+}
+
 .card-face-wrapper {
     position: absolute;
     top: 0;
@@ -114,6 +131,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: var(--face-card-color);
+    color: var(--main-color);
+    backface-visibility: hidden;
 }
 
 .card-face {
@@ -122,4 +142,5 @@
     padding: 0.5rem;
     font-family: 'Courgette', cursive;
     font-size: small;
+
 }
