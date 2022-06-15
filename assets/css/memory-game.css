@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Courgette&display=swap');
 
+:root {
+    --main-color: indigo;
+    --secondary-color: cornsilk;
+    --shadow-color: gray;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -7,22 +13,21 @@
 }
 
 .memory-wrapper {
-    width: 100%;
+    width: 95%;
     height: 100vh;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: cornsilk;
-    /* put an animated motion here */
 }
 
 .memory-header {
     width: 100%;
     height: auto;
     padding: 0.5rem 2rem;
-    background-color: purple;
-    color: cornsilk;
+    background-color: var(--main-color);
+    color: var(--secondary-color);
     text-align: center;
     display: flex;
     justify-content: space-between;
@@ -31,21 +36,22 @@
 
 .memory-header h1 {
     font-size: 1.5rem;
-    margin-left: 2rem;
 }
 
 #reset-btn {
     padding: 0.3rem;
-    margin-right: 2rem;
-    background-color: cornsilk;
-    color: purple;
+    width: 6rem;
+    margin-right: 4rem;
+    background-color: var(--secondary-color);
+    color: var(--main-color);
     border-radius: 0.3rem;
     border: none;
+    box-shadow: .1rem .1rem 0 var(--shadow-color);
 }
 
 #reset-btn:hover {
     filter: hue-rotate(180deg);
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
 #reset-btn:active {
@@ -53,25 +59,38 @@
     transform: translate(1px, -1px);
 }
 
-#memory-board {
-    width: 95%;
+.board-wrapper {
+    /* width: 95%; */
     max-width: 100%;
-    border: 1px solid red;
-    height: 100vh;
     display: flex;
     align-items: center;
+    justify-content: center;
+    background-color: var(--secondary-color);
+}
+
+#memory-board {
+    width: inherit;
+    height: 90vh;
+    display: inline-flex;
+    /* align-items: center; */
     justify-content: space-evenly;
     flex-wrap: wrap;
 }
 
+#memory-board>div {
+    margin: 10px;
+}
 
 .card-wrapper {
     position: relative;
     display: flex;
     width: 18%;
-    height: 23%;
+    height: 20%;
     align-items: center;
     justify-content: center;
+    border-radius: 0.3rem;
+    box-shadow: .2rem .2rem 0 var(--shadow-color);
+
 }
 
 .card-wrapper:hover {
@@ -80,19 +99,25 @@
 }
 
 .card-top,
-.card-face {
-    max-height: 7rem;
-    border-radius: 0.5rem;
-    box-shadow: 0.2rem gray;
-    margin: 0.3rem;
-
+.card-face-wrapper {
+    width: 100%;
+    height: 100%;
+    /* margin: 0.3rem; */
+    border-radius: 0.3rem;
+    border: none;
 }
 
-.card-face {
+.card-face-wrapper {
     position: absolute;
     top: 0;
     right: 0;
-    max-height: 6.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-face {
+    color: var(--secondary-color);
     text-align: center;
     padding: 0.5rem;
     font-family: 'Courgette', cursive;

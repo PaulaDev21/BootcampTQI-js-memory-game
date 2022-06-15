@@ -35,14 +35,14 @@ function buildCardTop(index) {
 function buildQuestionCardFace(pairId) {
     let cardFace = prepareCardFace();
     cardFace.setAttribute('id', 'question_' + pairId);
-    cardFace.innerHTML = MOCK_QUESTIONS[Math.floor(pairId / 2)].question;
+    cardFace.innerHTML = MOCK_QUESTIONS[Math.floor(pairId)].question;
     return cardFace;
 }
 
 function buildAnswerCardFace(pairId) {
     let cardFace = prepareCardFace();
     cardFace.setAttribute('id', 'answer_' + pairId);
-    cardFace.innerHTML = MOCK_QUESTIONS[Math.floor(pairId / 2)].answer;
+    cardFace.innerHTML = MOCK_QUESTIONS[Math.floor(pairId)].answer;
     return cardFace;
 }
 
@@ -50,18 +50,22 @@ function prepareCardFace() {
     let cardFace = document.createElement('div');
     cardFace.setAttribute('class', 'card-face');
     cardFace.setAttribute('alt', 'Search for the card which matches this.');
-    return cardFace
+    return cardFace;
 }
 
 
 function buildCardWrapper(pairId, faceBuilder) {
     let cardTop = buildCardTop(pairId);
     let cardFace = faceBuilder(pairId);
-    let cardWrapper = document.createElement('div');
 
+    let faceWrapper = document.createElement('div');
+    faceWrapper.setAttribute('class', 'card-face-wrapper');
+    faceWrapper.appendChild(cardFace);
+
+    let cardWrapper = document.createElement('div');
     cardWrapper.setAttribute('class', 'card-wrapper');
     cardWrapper.appendChild(cardTop);
-    cardWrapper.appendChild(cardFace);
+    cardWrapper.appendChild(faceWrapper);
 
     return cardWrapper;
 }
@@ -81,7 +85,8 @@ function createCards(questions) {
 function resetBoard() {
     let cardWrappers = cards;
     let boardElement = memoryBoard;
-    let sInd = shuffleCards(cardWrappers.length);
+    // let sInd = shuffleCards(cardWrappers.length);
+    let sInd = (i => [...Array(i).keys()])(cardWrappers.length);
 
     let randomCard, cardIndex;
 
@@ -98,27 +103,27 @@ function resetBoard() {
 
 let MOCK_QUESTIONS = [
     {
-        question: "What for JavaScript use DOM?",
+        question: "What for does JavaScript use DOM?",
         answer: "To handle the elements in an HTML page.",
     },
 
     {
-        question: "Where we can use the 'length' attribute?",
+        question: "Where can we use the 'length' attribute?",
         answer: "It's an attribute for arrays and strings.",
     },
 
     {
-        question: "Which variable type has always global scope?",
+        question: "Which variable type does always have global scope?",
         answer: "Variables that are declared as 'var'",
     },
 
     {
-        question: "What do you need to use 'await' inside a function?",
+        question: "What do you need so you can use 'await' inside a function?",
         answer: "The function should be declared as 'async'",
     },
     {
         question: "What does DOM mean?",
-        answer: "It's an acronym for Object Document Model",
+        answer: "It's an acronym for Document Object Model",
     },
     {
         question: "What are the conditional commands?",
@@ -131,12 +136,12 @@ let MOCK_QUESTIONS = [
 
     {
         question: "How do we create a class in JavaScript?",
-        answer: "By using the reserved word class, then a name, then defining it's attributes and methods inside {}.",
+        answer: "By using the reserved word 'class' before its name. The class code goes between {}.",
     },
 
     {
         question: "How to create a subclass in JavaScript?",
-        answer: "By using the reserved word 'inherits' then the parent class name.",
+        answer: "By using the reserved word 'inherits' before the parent class name.",
     },
     {
         question: "What's the structure for handling errors?",
@@ -145,7 +150,7 @@ let MOCK_QUESTIONS = [
 
 ];
 
-const CARD_TOP_IMAGE = "./assets/img/card-top.jpg";
+const CARD_TOP_IMAGE = "./assets/img/card-top3.jpg";
 const cards = createCards(MOCK_QUESTIONS);
 const memoryBoard = document.getElementById('memory-board')
 
