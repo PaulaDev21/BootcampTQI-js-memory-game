@@ -20,28 +20,81 @@ function shuffleCards(nCards) {
     return indexes;
 }
 
+
+let nPairs, flipped, flippedCard1, flippedCard2;
+function resetPlay() {
+    nPairs = 0;
+    flipped = false;
+}
+
+function play() {
+    console.log('entered play', flipped);
+    if (flipped) {
+        flippedCard2 = this;
+        if (arePairs(flippedCard1, flippedCard2)) {
+            flippedCard1.classList.toggle('inactive');
+            flippedCard2.classList.toggle('inactive');
+            nPairs++;
+        }
+        else {
+            setTimeout(() => {
+                flippedCard1.click();
+                flippedCard2.click();
+            }, 1500);
+        }
+    }
+
+    else {
+        flippedCard1 = this;
+    }
+    flipped = !flipped;
+}
+
+function arePairs(card1, card2) {
+    if (card1.firstChild.id.slice(0, 6) !== card2.firstChild.id.slice(0, 6)) {
+        let realId1 = card1.id.slice(card1.id.search('top'));
+        let realId2 = card2.id.slice(card2.id.search('top'));
+        if (realId1 == realId2) {
+            return true;
+        }
+    }
+    return false;
+}
+
 //===========================INTERFACE CONSTRUCTION============================
 
 
-function buildCardTop(index) {
+function buildQuestionCardTop(index) {
+    let cardTop = prepareTopCard();
+    cardTop.setAttribute('id', 'question-card-top-' + index);
+    // cardTop.setAttribute('class', 'flip');
+    return cardTop;
+}
+
+function buildAnswerCardTop(index) {
+    let cardTop = prepareTopCard();
+    cardTop.setAttribute('id', 'answer-card-top-' + index);
+    return cardTop;
+}
+
+function prepareTopCard() {
     let cardTop = document.createElement('img');
     cardTop.setAttribute('src', CARD_TOP_IMAGE);
     cardTop.setAttribute('class', 'card-top');
     cardTop.setAttribute('alt', 'Click the card to see the content.');
-    cardTop.setAttribute('id', 'card_' + index);
     return cardTop;
 }
 
 function buildQuestionCardFace(pairId) {
     let cardFace = prepareCardFace();
-    cardFace.setAttribute('id', 'question_' + pairId);
+    cardFace.setAttribute('id', 'question-' + pairId);
     cardFace.innerHTML = MOCK_QUESTIONS[Math.floor(pairId)].question;
     return cardFace;
 }
 
 function buildAnswerCardFace(pairId) {
     let cardFace = prepareCardFace();
-    cardFace.setAttribute('id', 'answer_' + pairId);
+    cardFace.setAttribute('id', 'answer-' + pairId);
     cardFace.innerHTML = MOCK_QUESTIONS[Math.floor(pairId)].answer;
     return cardFace;
 }
@@ -54,7 +107,7 @@ function prepareCardFace() {
 }
 
 
-function buildCardWrapper(pairId, faceBuilder) {
+function buildCardWrapper(pairId, topBuilder, faceBuilder) {
 
     let cardFace = faceBuilder(pairId);
 
@@ -62,13 +115,13 @@ function buildCardWrapper(pairId, faceBuilder) {
     faceWrapper.setAttribute('class', 'card-face-wrapper');
     faceWrapper.appendChild(cardFace);
 
-    let cardTop = buildCardTop(pairId);
+    let cardTop = topBuilder(pairId);
 
     let cardWrapper = document.createElement('div');
     cardWrapper.setAttribute('class', 'card-wrapper');
-    cardWrapper.appendChild(faceWrapper);
-    cardWrapper.appendChild(cardTop);
 
+    cardWrapper.appendChild(cardTop);
+    cardWrapper.appendChild(faceWrapper);
 
     return cardWrapper;
 }
@@ -79,22 +132,25 @@ function createCards(questions) {
 
     for (let i = 0; i < questions.length; i++) {
 
-        cardWrappers.push(buildCardWrapper(i, buildQuestionCardFace));
-        cardWrappers.push(buildCardWrapper(i, buildAnswerCardFace));
+        cardWrappers.push(buildCardWrapper(i, buildQuestionCardTop, buildQuestionCardFace));
+        cardWrappers.push(buildCardWrapper(i, buildAnswerCardTop, buildAnswerCardFace));
     }
     return cardWrappers;
 }
 
 function resetBoard() {
+
+    resetPlay();
+
     let cardWrappers = cards;
     let boardElement = memoryBoard;
-    let sInd = shuffleCards(cardWrappers.length);
-    //let sInd = (i => [...Array(i).keys()])(cardWrappers.length);
+    //let sInd = shuffleCards(cardWrappers.length);
+    let sInd = (i => [...Array(i).keys()])(cardWrappers.length);
 
     let randomCard, cardIndex;
 
     for (let i = 0; i < cardWrappers.length; i++) {
-        cardIndex = sInd[i]
+        cardIndex = sInd[i];
         randomCard = cardWrappers[cardIndex];
         boardElement.appendChild(randomCard);
     }
@@ -104,7 +160,10 @@ function resetBoard() {
 // ================GAME MOTION====================
 
 function flipCard() {
-    this.classList.toggle('flip');
+    console.log('entered flipCard', flipped);
+    if (!flipped) {
+        this.classList.toggle('flip');
+    }
 }
 
 // ===========================INITIALIZING INTERFACE=====================================
@@ -161,12 +220,17 @@ let MOCK_QUESTIONS = [
 const CARD_TOP_IMAGE = "./assets/img/card-top3.jpg";
 const cards = createCards(MOCK_QUESTIONS);
 const memoryBoard = document.getElementById('memory-board');
+// memoryBoard.addEventListener('change', play)
+
+// console.log(cards[1], cards[0])
+// console.log(arePairs(cards[2].firstChild, cards[3].firstChild));
 
 cards.forEach(card => {
     card.addEventListener('click', flipCard);
+    card.addEventListener('click', play);
 });
 
 document.getElementById('memory-wrapper').setAttribute('onload', resetBoard());
-document.getElementById('reset-btn').setAttribute('onclick', resetBoard());
+document.getElementById('reset-btn').addEventListener('click', resetBoard);
 
 
