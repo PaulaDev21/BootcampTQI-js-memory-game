@@ -1,57 +1,3 @@
-
-
-
-
-
-function play() {
-    console.log('entered play', flipped);
-    if (flipped) {
-        flippedCard2 = this;
-        if (arePairs(flippedCard1, flippedCard2)) {
-            flippedCard1.classList.toggle('inactive');
-            flippedCard2.classList.toggle('inactive');
-            nPairs++;
-        }
-        else {
-            setTimeout(() => {
-                flippedCard1.click();
-                flippedCard2.click();
-            }, 1500);
-        }
-    }
-
-    else {
-        flippedCard1 = this;
-    }
-    flipped = !flipped;
-}
-
-function arePairs(card1, card2) {
-    if (card1.firstChild.id.slice(0, 6) !== card2.firstChild.id.slice(0, 6)) {
-        let realId1 = card1.id.slice(card1.id.search('top'));
-        let realId2 = card2.id.slice(card2.id.search('top'));
-        if (realId1 == realId2) {
-            return true;
-        }
-    }
-    return false;
-}
-
-function resetBoard() {
-
-    resetPlay();
-
-    //let sInd = shuffleCards(cardWrappers.length);
-    let randomIndexes = (i => [...Array(i).keys()])(cards.length);
-
-    cards.forEach(card => {
-        card.style.order = randomIndexes.values.next();
-        console.log(card.style.order);
-    });
-}
-
-// ================GAME MOTION====================
-
 function flipCard() {
     console.log('entered flipCard, flipped = ', flipped);
     if (this === flippedCard1) {
@@ -77,6 +23,33 @@ function flipCard() {
         resetPlay();
     }
 }
+
+function arePairs(cardWrapper1, cardWrapper2) {
+    if (cardWrapper1.firstChild.id.slice(0, 6) !== cardWrapper2.firstChild.id.slice(0, 6)) {
+        let realId1 = cardWrapper1.id.slice(cardWrapper1.id.search('top'));
+        let realId2 = cardWrapper2.id.slice(cardWrapper2.id.search('top'));
+        if (realId1 == realId2) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function resetBoard() {
+    resetPlay();
+
+    //let randomIndexes = shuffleCards(cardWrappers.length);
+    let randomIndexes = (i => [...Array(i).keys()])(cards.length);
+
+    cards.forEach(card => {
+        card.style.order = randomIndexes.values.next();
+        card.addEventListener('click', flipCard);
+        console.log(card.style.order);
+    });
+
+}
+
+
 
 function gameOver() {
     nPairs++;

@@ -44,6 +44,8 @@ function prepareCardFace() {
 
 function buildCardWrapper(pairId, topBuilder, faceBuilder) {
 
+    console.log(pairId)
+
     let cardFace = faceBuilder(pairId);
 
     let faceWrapper = document.createElement('div');
@@ -65,28 +67,12 @@ function buildBoard(questions) {
 
     let cardWrappers = [];
 
+    console.log('entrei build lboard')
     for (let i = 0; i < questions.length; i++) {
 
         memoryBoard.appendChild(buildCardWrapper(i, buildQuestionCardTop, buildQuestionCardFace));
         memoryBoard.appendChild(buildCardWrapper(i, buildAnswerCardTop, buildAnswerCardFace));
     }
+    console.log(memoryBoard);
     return cardWrappers;
 }
-
-
-// ===========================INITIALIZING INTERFACE=====================================
-
-
-
-const CARD_TOP_IMAGE = "./assets/img/card-top3.jpg";
-const memoryBoard = document.getElementById('memory-board');
-const cards = buildBoard(MOCK_QUESTIONS);
-
-cards.forEach(card => {
-    card.addEventListener('click', flipCard);
-});
-
-document.getElementById('memory-wrapper').setAttribute('onload', resetBoard);
-document.getElementById('reset-btn').addEventListener('click', resetBoard);
-
-
