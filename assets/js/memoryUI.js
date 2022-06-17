@@ -44,8 +44,6 @@ function prepareCardFace() {
 
 function buildCardWrapper(pairId, topBuilder, faceBuilder) {
 
-    console.log(pairId)
-
     let cardFace = faceBuilder(pairId);
 
     let faceWrapper = document.createElement('div');
@@ -65,14 +63,16 @@ function buildCardWrapper(pairId, topBuilder, faceBuilder) {
 
 function buildBoard(questions) {
 
-    let cardWrappers = [];
+    let cardWrappers = [], newCard;
 
-    console.log('entrei build lboard')
     for (let i = 0; i < questions.length; i++) {
+        newCard = buildCardWrapper(i, buildQuestionCardTop, buildQuestionCardFace);
+        memoryBoard.appendChild(newCard);
+        cardWrappers.push(newCard);
 
-        memoryBoard.appendChild(buildCardWrapper(i, buildQuestionCardTop, buildQuestionCardFace));
-        memoryBoard.appendChild(buildCardWrapper(i, buildAnswerCardTop, buildAnswerCardFace));
+        newCard = buildCardWrapper(i, buildAnswerCardTop, buildAnswerCardFace);
+        memoryBoard.appendChild(newCard);
+        cardWrappers.push(newCard);
     }
-    console.log(memoryBoard);
     return cardWrappers;
 }

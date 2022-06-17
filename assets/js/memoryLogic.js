@@ -13,7 +13,7 @@ function flipCard() {
         flippedCard2 = this;
         if (arePairs(flippedCard1, flippedCard2)) {
             disableCards(flippedCard1, flippedCard2);
-            if (gameOver()) {
+            if (gameOver(cards)) {
                 resetBoard();
             }
         }
@@ -35,23 +35,27 @@ function arePairs(cardWrapper1, cardWrapper2) {
     return false;
 }
 
-function resetBoard() {
+function resetBoard(cards) {
+
+    console.log('reset board ,cards', cards.length)
     resetPlay();
 
     //let randomIndexes = shuffleCards(cardWrappers.length);
     let randomIndexes = (i => [...Array(i).keys()])(cards.length);
 
+    let indexesIterator = randomIndexes[Symbol.iterator]();
     cards.forEach(card => {
-        card.style.order = randomIndexes.values.next();
+        card.style.order = indexesIterator.next();
         card.addEventListener('click', flipCard);
         console.log(card.style.order);
     });
-
+    return cards;
 }
 
 
 
-function gameOver() {
+function gameOver(cards) {
+    console.log(cards)
     nPairs++;
     if (nPairs === Math.floor(cards.length / 2)) {
         return true;
